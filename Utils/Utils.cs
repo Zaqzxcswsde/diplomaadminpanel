@@ -1,10 +1,13 @@
 ﻿using diplomaadminpanel.Models;
+using dotenv.net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace diplomaadminpanel.Utils
 {
@@ -45,7 +48,18 @@ namespace diplomaadminpanel.Utils
 
         public static string GetAdminToken()
         {
-            return Environment.GetEnvironmentVariable($"ADMIN_TOKEN_{Env.ToUpper()}") ?? "";
+            string varName = $"ADMIN_TOKEN_{Env.ToUpper()}";
+            if (!dotenv.net.Utilities.EnvReader.TryGetStringValue(varName, out string token))
+            {
+                MessageBox.Show(
+                    $"Не удаётся найти токен {varName}.\nПриложение не может продолжать работу.",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                    );
+                Application.Exit();
+            }
+            return token;
         }
 
 

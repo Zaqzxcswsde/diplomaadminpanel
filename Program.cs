@@ -1,3 +1,5 @@
+using dotenv.net;
+
 namespace diplomaadminpanel
 {
     internal static class Program
@@ -12,7 +14,8 @@ namespace diplomaadminpanel
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            DotNetEnv.Env.Load();
+            //DotEnv.Load(options: new DotEnvOptions(probeForEnv: true, probeLevelsToSearch: 2));
+            DotEnv.Load();
             ApplicationConfiguration.Initialize();
             Application.Run(new Forms.FormMain());
         }
