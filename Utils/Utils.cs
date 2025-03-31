@@ -14,6 +14,31 @@ namespace diplomaadminpanel.Utils
     internal static partial class Utils
     {
 
+        public async static void PopulateOrderingComboBox(string url, ComboBox cb)
+        {
+            if (cb.Items.Count == 0)
+            {
+                if (await new PaginatedRequest<OrderingResponse>(
+                    usePagination: false,
+                    method: HttpMethod.Get,
+                    url: url,
+                    onSuccess: (StatusCode, response) =>
+                    {
+                        foreach (var item in response.choices!)
+                        {
+                            cb.Items.Add(new ComboBoxItem { Tag = item.Key, Text = item.Value + " ↑" });
+                            cb.Items.Add(new ComboBoxItem { Tag = "-" + item.Key, Text = item.Value + " ↓" });
+                        }
+                        cb.SelectedItem = cb.Items
+                            .OfType<ComboBoxItem>()
+                            .FirstOrDefault(it => it.Tag?.ToString() == response.@default);
+                    }
+                ).FetchCurrentPage() != HttpStatusCode.OK) return;
+            }
+        }
+
+
+
         public static string Truncate(string input, int maxLength = 500)
         {
             if (string.IsNullOrEmpty(input)) return input;

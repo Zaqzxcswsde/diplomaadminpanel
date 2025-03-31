@@ -14,6 +14,7 @@ namespace diplomaadminpanel.Models
         public string? ip { get; set; }
         public string? result { get; set; }
         public string? msg { get; set; }
-        public int token { get; set; }
+        public int? token { get; set; }
+        public string? fingerprint { get; set; }
     }
 }

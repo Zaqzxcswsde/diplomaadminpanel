@@ -95,7 +95,7 @@ namespace diplomaadminpanel.Forms
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(620, 36);
             btnUpdate.TabIndex = 3;
-            btnUpdate.Text = "Отменить (удалит текущие изменения)";
+            btnUpdate.Text = "Обновить из базы (удалит текущие изменения)";
             btnUpdate.UseVisualStyleBackColor = true;
             btnUpdate.Click += btnUpdate_Click;
             // 
@@ -298,6 +298,7 @@ namespace diplomaadminpanel.Forms
             txtFingerprint.BorderStyle = BorderStyle.None;
             txtFingerprint.Location = new Point(108, 86);
             txtFingerprint.Name = "txtFingerprint";
+            txtFingerprint.ReadOnly = true;
             txtFingerprint.Size = new Size(486, 16);
             txtFingerprint.TabIndex = 3;
             txtFingerprint.TabStop = false;
@@ -391,7 +392,7 @@ namespace diplomaadminpanel.Forms
             // 
             // btnUserChangeRollback1
             // 
-            btnUserChangeRollback1.Location = new Point(368, 19);
+            btnUserChangeRollback1.Location = new Point(367, 19);
             btnUserChangeRollback1.Name = "btnUserChangeRollback1";
             btnUserChangeRollback1.Size = new Size(229, 29);
             btnUserChangeRollback1.TabIndex = 8;
@@ -403,7 +404,7 @@ namespace diplomaadminpanel.Forms
             // 
             cbClearUser.AutoCheck = false;
             cbClearUser.AutoSize = true;
-            cbClearUser.Location = new Point(345, 57);
+            cbClearUser.Location = new Point(344, 54);
             cbClearUser.Name = "cbClearUser";
             cbClearUser.Padding = new Padding(10, 0, 0, 0);
             cbClearUser.Size = new Size(143, 19);
@@ -424,7 +425,7 @@ namespace diplomaadminpanel.Forms
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(6, 91);
+            label10.Location = new Point(6, 84);
             label10.Name = "label10";
             label10.Size = new Size(103, 15);
             label10.TabIndex = 5;
@@ -454,7 +455,7 @@ namespace diplomaadminpanel.Forms
             // 
             // btnSearchUser
             // 
-            btnSearchUser.Location = new Point(368, 88);
+            btnSearchUser.Location = new Point(368, 79);
             btnSearchUser.Name = "btnSearchUser";
             btnSearchUser.Size = new Size(75, 23);
             btnSearchUser.TabIndex = 3;
@@ -464,7 +465,7 @@ namespace diplomaadminpanel.Forms
             // 
             // txtSearchUser
             // 
-            txtSearchUser.Location = new Point(115, 87);
+            txtSearchUser.Location = new Point(115, 79);
             txtSearchUser.Name = "txtSearchUser";
             txtSearchUser.Size = new Size(247, 23);
             txtSearchUser.TabIndex = 2;
@@ -472,9 +473,9 @@ namespace diplomaadminpanel.Forms
             // 
             // paginatedView2
             // 
-            paginatedView2.Location = new Point(6, 84);
+            paginatedView2.Location = new Point(6, 76);
             paginatedView2.Name = "paginatedView2";
-            paginatedView2.Size = new Size(591, 308);
+            paginatedView2.Size = new Size(591, 316);
             paginatedView2.TabIndex = 0;
             // 
             // tabPage1

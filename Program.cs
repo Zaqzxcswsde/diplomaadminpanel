@@ -18,6 +18,7 @@ namespace diplomaadminpanel
             DotEnv.Load();
             ApplicationConfiguration.Initialize();
             Application.Run(new Forms.FormMain());
+            //Application.Run(new Forms.FormCustomCheckboxFilter());
         }
     }
 }

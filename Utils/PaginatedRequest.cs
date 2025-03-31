@@ -36,6 +36,8 @@ namespace diplomaadminpanel.Utils
         private bool hasNext = false;
         private bool hasPrevious = false;
 
+        private int pageSize = 10;
+
         internal PaginatedRequest(
             bool usePagination,
             HttpMethod method,
@@ -46,7 +48,8 @@ namespace diplomaadminpanel.Utils
             Action<HttpStatusCode, string>? onError = null,
             Button? nextPageButton = null,
             Button? previousPageButton = null,
-            Label? labelCurrentPage = null
+            Label? labelCurrentPage = null,
+            int pageSize = 10
         )
         {
             this.usePagination = usePagination;
@@ -61,6 +64,12 @@ namespace diplomaadminpanel.Utils
             this.previousPageButton = previousPageButton;
             if (this.nextPageButton != null) this.nextPageButton.Click += NextButtonClick;
             if (this.previousPageButton != null) this.previousPageButton.Click += PreviousButtonClick;
+            this.pageSize = pageSize;
+
+            if (this.usePagination)
+            {
+                this.parameters.TryAdd("page_size", this.pageSize.ToString());
+            }
         }
 
 
@@ -184,7 +193,7 @@ namespace diplomaadminpanel.Utils
 
                                         if (((PagedResponse<T>)parsed).count > 0)
                                         {
-                                            totalPages = (int)Math.Ceiling((double)((PagedResponse<T>)parsed).count / 10);
+                                            totalPages = (int)Math.Ceiling((double)((PagedResponse<T>)parsed).count / this.pageSize);
                                         }
                                         else
                                         {

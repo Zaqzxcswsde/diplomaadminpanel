@@ -150,6 +150,7 @@ namespace diplomaadminpanel.Forms
                     elem.initial_data ?? ""
                 ]
             );
+            paginatedView1.ChangeRowSelecttionVisibility(false);
 
             paginatedView2.LoadColumns(new List<DataGridViewColumn>
             {
@@ -161,6 +162,7 @@ namespace diplomaadminpanel.Forms
                 new DataGridViewCheckBoxColumn {
                     Name = "colHasToken",
                     HeaderText = "Токен привязан?",
+                    Width = 120
                 },
                 new DataGridViewTextBoxColumn {
                     Name = "colUuid",
@@ -186,6 +188,8 @@ namespace diplomaadminpanel.Forms
                 tokenId = token.id;
                 await UpdateUIFromToken();
             }
+
+            this.Text = $"Редактирование токена {tokenId}";
         }
 
 
@@ -363,7 +367,7 @@ namespace diplomaadminpanel.Forms
                 {
                     if (createdUserId != null)
                     {
-                        await new PaginatedRequest<UserInfo>(
+                        await new PaginatedRequest<string>(
                         usePagination: false,
                         method: HttpMethod.Delete,
                         url: $"/users/{createdUserId}"
@@ -441,8 +445,11 @@ namespace diplomaadminpanel.Forms
             UpdateUserRelatedUI(cbCreateNewUser.Checked ? UpdateChoices.NoChange : UpdateChoices.New);
 
 
-        private void EventLoadHistoryWithParams(object sender, EventArgs e) =>
+        private void EventLoadHistoryWithParams(object sender, EventArgs e)
+        {
             _ = LoadHistoryWithParams();
+            paginatedView1.ChangeRowSelecttionVisibility(!paginatedView1.RowSelectionVisibility);
+        }
 
 
         private void btnUserChangeRollback_Click(object sender, EventArgs e) =>
