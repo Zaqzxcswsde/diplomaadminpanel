@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="env" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">prod</Value>
     </Setting>
   </Settings>
 </SettingsFile>
