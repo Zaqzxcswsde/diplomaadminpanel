@@ -33,7 +33,10 @@ namespace diplomaadminpanel.Forms
         private void reinitialize()
         {
             BtnSimulateLogin.Enabled = true;
-            txtLogin.Enabled = true;
+            if (InitialUuid == null)
+            {
+                txtLogin.Enabled = true;
+            }
             progressBar1.Value = 0;
             label3.Text = "Ожидание команды";
             timer_ticks = 0;
