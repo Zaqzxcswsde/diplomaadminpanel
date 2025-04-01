@@ -1320,6 +1320,8 @@ namespace diplomaadminpanel.Forms
 
             lstViewActivatedTokens.Items.Clear();
 
+            if (activatedTokens.Count == 0) return;
+
             var activatedIdsList = string.Join(",", activatedTokens.Select(item => item.id).ToList());
 
             var tokensInfo = await new PaginatedRequest<List<FullTokenInfo>>(
