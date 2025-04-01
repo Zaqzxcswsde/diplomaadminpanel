@@ -38,19 +38,34 @@
             prodToolStripMenuItem = new ToolStripMenuItem();
             toolStripDropDownButtonTools = new ToolStripDropDownButton();
             tsmSimulateLogin = new ToolStripMenuItem();
-            tabControl1 = new TabControl();
+            tcMain = new TabControl();
             tpAddNewTokens = new TabPage();
-            groupBox3 = new GroupBox();
+            gbStage5 = new GroupBox();
+            btnTestActivatedTokens = new Button();
+            label12 = new Label();
+            gbStage4 = new GroupBox();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            lstViewActivatedTokens = new ListView();
+            columnHeader7 = new ColumnHeader();
+            columnHeader1 = new ColumnHeader();
+            columnHeader8 = new ColumnHeader();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            label11 = new Label();
+            panel1 = new Panel();
+            btnActivatedTokensNextPage = new Button();
+            lblActivatedTokensPages = new Label();
+            btnActivatedTokensPrevPage = new Button();
+            gbstage3 = new GroupBox();
             buttonActivateSelectedTokens = new Button();
             label3 = new Label();
-            groupBox2 = new GroupBox();
+            gbStage2 = new GroupBox();
             lblPgInfo = new Label();
             btnTknNext = new Button();
             btnTknPrev = new Button();
             buttonUpdateTokensList = new Button();
             clbTokensList = new CheckedListBox();
             label2 = new Label();
-            groupBox1 = new GroupBox();
+            gbStage1 = new GroupBox();
             buttonSwitchToGraceful = new Button();
             label1 = new Label();
             tpHistory = new TabPage();
@@ -101,11 +116,16 @@
             toolTip1 = new ToolTip(components);
             tmrAutoUpdateHistory = new System.Windows.Forms.Timer(components);
             toolStrip1.SuspendLayout();
-            tabControl1.SuspendLayout();
+            tcMain.SuspendLayout();
             tpAddNewTokens.SuspendLayout();
-            groupBox3.SuspendLayout();
-            groupBox2.SuspendLayout();
-            groupBox1.SuspendLayout();
+            gbStage5.SuspendLayout();
+            gbStage4.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
+            panel1.SuspendLayout();
+            gbstage3.SuspendLayout();
+            gbStage2.SuspendLayout();
+            gbStage1.SuspendLayout();
             tpHistory.SuspendLayout();
             groupBox8.SuspendLayout();
             groupBox7.SuspendLayout();
@@ -185,26 +205,28 @@
             tsmSimulateLogin.Text = "Симуляция Логина";
             tsmSimulateLogin.Click += tsmSimulateLogin_Click;
             // 
-            // tabControl1
+            // tcMain
             // 
-            tabControl1.Controls.Add(tpAddNewTokens);
-            tabControl1.Controls.Add(tpHistory);
-            tabControl1.Controls.Add(tpListTokens);
-            tabControl1.Controls.Add(tpAllUsers);
-            tabControl1.Dock = DockStyle.Fill;
-            tabControl1.Location = new Point(0, 25);
-            tabControl1.Margin = new Padding(4, 3, 4, 3);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(929, 451);
-            tabControl1.TabIndex = 2;
-            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
+            tcMain.Controls.Add(tpAddNewTokens);
+            tcMain.Controls.Add(tpHistory);
+            tcMain.Controls.Add(tpListTokens);
+            tcMain.Controls.Add(tpAllUsers);
+            tcMain.Dock = DockStyle.Fill;
+            tcMain.Location = new Point(0, 25);
+            tcMain.Margin = new Padding(4, 3, 4, 3);
+            tcMain.Name = "tcMain";
+            tcMain.SelectedIndex = 0;
+            tcMain.Size = new Size(929, 451);
+            tcMain.TabIndex = 2;
+            tcMain.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // tpAddNewTokens
             // 
-            tpAddNewTokens.Controls.Add(groupBox3);
-            tpAddNewTokens.Controls.Add(groupBox2);
-            tpAddNewTokens.Controls.Add(groupBox1);
+            tpAddNewTokens.Controls.Add(gbStage5);
+            tpAddNewTokens.Controls.Add(gbStage4);
+            tpAddNewTokens.Controls.Add(gbstage3);
+            tpAddNewTokens.Controls.Add(gbStage2);
+            tpAddNewTokens.Controls.Add(gbStage1);
             tpAddNewTokens.Location = new Point(4, 24);
             tpAddNewTokens.Margin = new Padding(4, 3, 4, 3);
             tpAddNewTokens.Name = "tpAddNewTokens";
@@ -214,26 +236,183 @@
             tpAddNewTokens.Text = "Валидация нового токена";
             tpAddNewTokens.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
+            // gbStage5
             // 
-            groupBox3.Controls.Add(buttonActivateSelectedTokens);
-            groupBox3.Controls.Add(label3);
-            groupBox3.Location = new Point(57, 294);
-            groupBox3.Margin = new Padding(4, 3, 4, 3);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Padding = new Padding(4, 3, 4, 3);
-            groupBox3.Size = new Size(278, 105);
-            groupBox3.TabIndex = 5;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Шаг 3";
+            gbStage5.Controls.Add(btnTestActivatedTokens);
+            gbStage5.Controls.Add(label12);
+            gbStage5.Location = new Point(294, 310);
+            gbStage5.Name = "gbStage5";
+            gbStage5.Size = new Size(619, 105);
+            gbStage5.TabIndex = 8;
+            gbStage5.TabStop = false;
+            gbStage5.Tag = "5";
+            gbStage5.Text = "Шаг 5 (опционально)";
+            // 
+            // btnTestActivatedTokens
+            // 
+            btnTestActivatedTokens.Location = new Point(6, 56);
+            btnTestActivatedTokens.Name = "btnTestActivatedTokens";
+            btnTestActivatedTokens.Size = new Size(607, 43);
+            btnTestActivatedTokens.TabIndex = 1;
+            btnTestActivatedTokens.Text = "Начать проверку";
+            btnTestActivatedTokens.UseVisualStyleBackColor = true;
+            btnTestActivatedTokens.Click += btnTestActivatedTokens_Click;
+            // 
+            // label12
+            // 
+            label12.Location = new Point(6, 19);
+            label12.Name = "label12";
+            label12.Size = new Size(607, 34);
+            label12.TabIndex = 0;
+            label12.Text = "Проверьте вход у активированных токенов";
+            label12.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // gbStage4
+            // 
+            gbStage4.Controls.Add(tableLayoutPanel1);
+            gbStage4.Location = new Point(294, 6);
+            gbStage4.Name = "gbStage4";
+            gbStage4.Size = new Size(619, 298);
+            gbStage4.TabIndex = 7;
+            gbStage4.TabStop = false;
+            gbStage4.Tag = "4";
+            gbStage4.Text = "Шаг 4";
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(lstViewActivatedTokens, 0, 1);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(3, 19);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 18.115942F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 81.8840561F));
+            tableLayoutPanel1.Size = new Size(613, 276);
+            tableLayoutPanel1.TabIndex = 7;
+            // 
+            // lstViewActivatedTokens
+            // 
+            lstViewActivatedTokens.Activation = ItemActivation.OneClick;
+            lstViewActivatedTokens.CheckBoxes = true;
+            lstViewActivatedTokens.Columns.AddRange(new ColumnHeader[] { columnHeader7, columnHeader1, columnHeader8 });
+            lstViewActivatedTokens.Dock = DockStyle.Fill;
+            lstViewActivatedTokens.FullRowSelect = true;
+            lstViewActivatedTokens.Location = new Point(3, 53);
+            lstViewActivatedTokens.MultiSelect = false;
+            lstViewActivatedTokens.Name = "lstViewActivatedTokens";
+            lstViewActivatedTokens.Size = new Size(607, 220);
+            lstViewActivatedTokens.TabIndex = 6;
+            lstViewActivatedTokens.UseCompatibleStateImageBehavior = false;
+            lstViewActivatedTokens.View = View.Details;
+            lstViewActivatedTokens.ItemCheck += lstViewActivatedTokens_ItemCheck;
+            lstViewActivatedTokens.ItemSelectionChanged += listView1_ItemSelectionChanged;
+            lstViewActivatedTokens.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            lstViewActivatedTokens.MouseDoubleClick += lstViewActivatedTokens_MouseDoubleClick;
+            // 
+            // columnHeader7
+            // 
+            columnHeader7.Text = "Отпечаток";
+            columnHeader7.Width = 130;
+            // 
+            // columnHeader1
+            // 
+            columnHeader1.Text = "Привязан?";
+            columnHeader1.Width = 70;
+            // 
+            // columnHeader8
+            // 
+            columnHeader8.Text = "Доп. инфо";
+            columnHeader8.Width = 240;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 2;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 78.25371F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21.746294F));
+            tableLayoutPanel2.Controls.Add(label11, 0, 0);
+            tableLayoutPanel2.Controls.Add(panel1, 1, 0);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(3, 3);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Size = new Size(607, 44);
+            tableLayoutPanel2.TabIndex = 7;
+            // 
+            // label11
+            // 
+            label11.Dock = DockStyle.Fill;
+            label11.Location = new Point(3, 0);
+            label11.Name = "label11";
+            label11.Size = new Size(469, 44);
+            label11.TabIndex = 0;
+            label11.Text = "Привяжите активированные токены к пользователям";
+            label11.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(btnActivatedTokensNextPage);
+            panel1.Controls.Add(lblActivatedTokensPages);
+            panel1.Controls.Add(btnActivatedTokensPrevPage);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(478, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(126, 38);
+            panel1.TabIndex = 12;
+            // 
+            // btnActivatedTokensNextPage
+            // 
+            btnActivatedTokensNextPage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnActivatedTokensNextPage.Location = new Point(89, 3);
+            btnActivatedTokensNextPage.Name = "btnActivatedTokensNextPage";
+            btnActivatedTokensNextPage.Size = new Size(34, 31);
+            btnActivatedTokensNextPage.TabIndex = 11;
+            btnActivatedTokensNextPage.Text = "->";
+            btnActivatedTokensNextPage.UseVisualStyleBackColor = true;
+            // 
+            // lblActivatedTokensPages
+            // 
+            lblActivatedTokensPages.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblActivatedTokensPages.Location = new Point(46, 3);
+            lblActivatedTokensPages.Name = "lblActivatedTokensPages";
+            lblActivatedTokensPages.Size = new Size(37, 31);
+            lblActivatedTokensPages.TabIndex = 10;
+            lblActivatedTokensPages.Text = "?/?";
+            lblActivatedTokensPages.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // btnActivatedTokensPrevPage
+            // 
+            btnActivatedTokensPrevPage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnActivatedTokensPrevPage.Location = new Point(6, 3);
+            btnActivatedTokensPrevPage.Name = "btnActivatedTokensPrevPage";
+            btnActivatedTokensPrevPage.Size = new Size(34, 31);
+            btnActivatedTokensPrevPage.TabIndex = 9;
+            btnActivatedTokensPrevPage.Text = "<-";
+            btnActivatedTokensPrevPage.UseVisualStyleBackColor = true;
+            // 
+            // gbstage3
+            // 
+            gbstage3.Controls.Add(buttonActivateSelectedTokens);
+            gbstage3.Controls.Add(label3);
+            gbstage3.Location = new Point(9, 310);
+            gbstage3.Margin = new Padding(4, 3, 4, 3);
+            gbstage3.Name = "gbstage3";
+            gbstage3.Padding = new Padding(4, 3, 4, 3);
+            gbstage3.Size = new Size(278, 105);
+            gbstage3.TabIndex = 5;
+            gbstage3.TabStop = false;
+            gbstage3.Tag = "3";
+            gbstage3.Text = "Шаг 3";
             // 
             // buttonActivateSelectedTokens
             // 
-            buttonActivateSelectedTokens.Enabled = false;
-            buttonActivateSelectedTokens.Location = new Point(7, 56);
+            buttonActivateSelectedTokens.Location = new Point(9, 56);
             buttonActivateSelectedTokens.Margin = new Padding(4, 3, 4, 3);
             buttonActivateSelectedTokens.Name = "buttonActivateSelectedTokens";
-            buttonActivateSelectedTokens.Size = new Size(264, 42);
+            buttonActivateSelectedTokens.Size = new Size(262, 43);
             buttonActivateSelectedTokens.TabIndex = 1;
             buttonActivateSelectedTokens.Text = "Завершить";
             buttonActivateSelectedTokens.UseVisualStyleBackColor = true;
@@ -241,30 +420,31 @@
             // 
             // label3
             // 
-            label3.Location = new Point(7, 18);
+            label3.Location = new Point(8, 19);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(263, 35);
+            label3.Size = new Size(262, 34);
             label3.TabIndex = 0;
             label3.Text = "Перевести систему в on режим и активировать выбранные токены";
             label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // groupBox2
+            // gbStage2
             // 
-            groupBox2.Controls.Add(lblPgInfo);
-            groupBox2.Controls.Add(btnTknNext);
-            groupBox2.Controls.Add(btnTknPrev);
-            groupBox2.Controls.Add(buttonUpdateTokensList);
-            groupBox2.Controls.Add(clbTokensList);
-            groupBox2.Controls.Add(label2);
-            groupBox2.Location = new Point(57, 84);
-            groupBox2.Margin = new Padding(4, 3, 4, 3);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Padding = new Padding(4, 3, 4, 3);
-            groupBox2.Size = new Size(278, 204);
-            groupBox2.TabIndex = 4;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Шаг 2";
+            gbStage2.Controls.Add(lblPgInfo);
+            gbStage2.Controls.Add(btnTknNext);
+            gbStage2.Controls.Add(btnTknPrev);
+            gbStage2.Controls.Add(buttonUpdateTokensList);
+            gbStage2.Controls.Add(clbTokensList);
+            gbStage2.Controls.Add(label2);
+            gbStage2.Location = new Point(9, 84);
+            gbStage2.Margin = new Padding(4, 3, 4, 3);
+            gbStage2.Name = "gbStage2";
+            gbStage2.Padding = new Padding(4, 3, 4, 3);
+            gbStage2.Size = new Size(278, 220);
+            gbStage2.TabIndex = 4;
+            gbStage2.TabStop = false;
+            gbStage2.Tag = "2";
+            gbStage2.Text = "Шаг 2";
             // 
             // lblPgInfo
             // 
@@ -297,7 +477,6 @@
             // 
             // buttonUpdateTokensList
             // 
-            buttonUpdateTokensList.Enabled = false;
             buttonUpdateTokensList.Location = new Point(7, 52);
             buttonUpdateTokensList.Margin = new Padding(4, 3, 4, 3);
             buttonUpdateTokensList.Name = "buttonUpdateTokensList";
@@ -314,33 +493,33 @@
             clbTokensList.Location = new Point(7, 84);
             clbTokensList.Margin = new Padding(4, 3, 4, 3);
             clbTokensList.Name = "clbTokensList";
-            clbTokensList.Size = new Size(263, 94);
+            clbTokensList.Size = new Size(263, 130);
             clbTokensList.TabIndex = 3;
             clbTokensList.ItemCheck += clbTokensList_ItemCheck;
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(49, 18);
+            label2.Location = new Point(8, 19);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(183, 30);
+            label2.Size = new Size(263, 30);
             label2.TabIndex = 2;
             label2.Text = "Выбрать из списка токены,\r\nкоторые необходимо включить";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // groupBox1
+            // gbStage1
             // 
-            groupBox1.Controls.Add(buttonSwitchToGraceful);
-            groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(57, 6);
-            groupBox1.Margin = new Padding(4, 3, 4, 3);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(4, 3, 4, 3);
-            groupBox1.Size = new Size(278, 72);
-            groupBox1.TabIndex = 3;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Шаг 1";
+            gbStage1.Controls.Add(buttonSwitchToGraceful);
+            gbStage1.Controls.Add(label1);
+            gbStage1.Location = new Point(9, 6);
+            gbStage1.Margin = new Padding(4, 3, 4, 3);
+            gbStage1.Name = "gbStage1";
+            gbStage1.Padding = new Padding(4, 3, 4, 3);
+            gbStage1.Size = new Size(278, 72);
+            gbStage1.TabIndex = 3;
+            gbStage1.TabStop = false;
+            gbStage1.Tag = "1";
+            gbStage1.Text = "Шаг 1";
             // 
             // buttonSwitchToGraceful
             // 
@@ -355,13 +534,13 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(40, 19);
+            label1.Location = new Point(8, 19);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(210, 15);
+            label1.Size = new Size(262, 15);
             label1.TabIndex = 0;
             label1.Text = "Перевести систему в Graceful режим";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tpHistory
             // 
@@ -870,7 +1049,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(929, 476);
-            Controls.Add(tabControl1);
+            Controls.Add(tcMain);
             Controls.Add(toolStrip1);
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
@@ -881,13 +1060,17 @@
             Shown += FormMain_Shown;
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
-            tabControl1.ResumeLayout(false);
+            tcMain.ResumeLayout(false);
             tpAddNewTokens.ResumeLayout(false);
-            groupBox3.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            gbStage5.ResumeLayout(false);
+            gbStage4.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            gbstage3.ResumeLayout(false);
+            gbStage2.ResumeLayout(false);
+            gbStage2.PerformLayout();
+            gbStage1.ResumeLayout(false);
             tpHistory.ResumeLayout(false);
             tpHistory.PerformLayout();
             groupBox8.ResumeLayout(false);
@@ -917,18 +1100,18 @@
         #endregion
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripLabel tslCurrentMode;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tcMain;
         private System.Windows.Forms.TabPage tpAddNewTokens;
         private System.Windows.Forms.TabPage tpHistory;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonSwitchToGraceful;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox gbstage3;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gbStage2;
         private System.Windows.Forms.Button buttonUpdateTokensList;
         private System.Windows.Forms.CheckedListBox clbTokensList;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbStage1;
         private System.Windows.Forms.Button buttonActivateSelectedTokens;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripDropDownButton toolStripDropDownButtonEnv;
@@ -985,6 +1168,21 @@
         private ComboBox cbUserOrdering;
         private Label label10;
         private Label label9;
+        private ListView lstViewActivatedTokens;
+        private ColumnHeader columnHeader7;
+        private ColumnHeader columnHeader8;
+        private GroupBox gbStage4;
+        private Label label11;
+        private TableLayoutPanel tableLayoutPanel1;
+        private GroupBox gbStage5;
+        private Button btnTestActivatedTokens;
+        private Label label12;
+        private Button btnActivatedTokensNextPage;
+        private Label lblActivatedTokensPages;
+        private Button btnActivatedTokensPrevPage;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Panel panel1;
+        private ColumnHeader columnHeader1;
     }
 }
 

@@ -16,6 +16,8 @@ using diplomaadminpanel.Models;
 using System.Formats.Nrbf;
 using Windows.UI.Composition;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System;
+using System.Linq;
 
 namespace diplomaadminpanel.Forms
 {
@@ -33,8 +35,12 @@ namespace diplomaadminpanel.Forms
             await Utils.Utils.GetOrSetEnforcingMode(newMode, tslCurrentMode);
 
 
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            CreateMyListView();
+
+
             //this.FormBorderStyle = FormBorderStyle.Sizable;
 
             //Program.UISyncContext = SynchronizationContext.Current;
@@ -249,7 +255,12 @@ namespace diplomaadminpanel.Forms
             );
             pgViewAllTokens.RowDoubleClick += PgViewAllTokens_RowDoubleClick;
             pgViewAllTokens.CellContentClick += PgViewAllTokens_CellContentClick;
+
+            ActivateStage(["1"]);
         }
+
+
+
 
         private async void PgViewAllUsers_RowDoubleClick(object? sender, object e)
         {
@@ -269,7 +280,7 @@ namespace diplomaadminpanel.Forms
                         {
                             user = ui.uuid,
                         },
-                        onSuccess: (_,_) => btnAllUsersSearch.PerformClick()
+                        onSuccess: (_, _) => btnAllUsersSearch.PerformClick()
                         ).FetchCurrentPage();
                 }
                 return;
@@ -280,27 +291,29 @@ namespace diplomaadminpanel.Forms
 
             var token_id = Convert.ToInt32(ui.token);
 
-            if (_openTokenForms.TryGetValue(token_id, out var frm))
-            {
-                if (frm.WindowState == FormWindowState.Minimized)
-                    frm.WindowState = FormWindowState.Normal;
+            spawnTokenForm(token_id);
 
-                frm.BringToFront();
+            //if (_openTokenForms.TryGetValue(token_id, out var frm))
+            //{
+            //    if (frm.WindowState == FormWindowState.Minimized)
+            //        frm.WindowState = FormWindowState.Normal;
 
-                return;
-            }
+            //    frm.BringToFront();
 
-            var dlg = new FormEditToken { tokenId = token_id };
+            //    return;
+            //}
 
-            dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
-            dlg.PerformedSave += (_, _) => btnAllUsersSearch.PerformClick();
-            dlg.FormClosed += (_, _) => btnAllUsersSearch.PerformClick();
-            dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
-            dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
+            //var dlg = new FormEditToken { tokenId = token_id };
 
-            _openTokenForms[token_id] = dlg;
+            //dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
+            //dlg.PerformedSave += (_, _) => btnAllUsersSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => btnAllUsersSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
 
-            dlg.Show();
+            //_openTokenForms[token_id] = dlg;
+
+            //dlg.Show();
         }
 
         private async void PgViewAllUsers_CellContentClick(object? sender, (string ColumnName, object? RowTag, object? Value) e)
@@ -373,28 +386,34 @@ namespace diplomaadminpanel.Forms
         {
             if (initial is not FullTokenInfo token) return;
 
-            var token_id = token.id;
 
-            if (_openTokenForms.TryGetValue(token_id, out var frm))
-            {
-                if (frm.WindowState == FormWindowState.Minimized)
-                    frm.WindowState = FormWindowState.Normal;
+            spawnTokenForm(token.id);
 
-                frm.BringToFront();
+            //var token_id = token.id;
 
-                return;
-            }
+            //if (_openTokenForms.TryGetValue(token_id, out var frm))
+            //{
+            //    if (frm.WindowState == FormWindowState.Minimized)
+            //        frm.WindowState = FormWindowState.Normal;
 
-            var dlg = new FormEditToken { token = token };
+            //    frm.BringToFront();
 
-            dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
-            dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
-            dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
+            //    return;
+            //}
 
-            _openTokenForms[token_id] = dlg;
+            //var dlg = new FormEditToken { token = token };
 
-            dlg.Show();
+            //dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
+
+            //_openTokenForms[token_id] = dlg;
+
+            //dlg.Show();
         }
+
+
+
 
         private string tokensrequesttimestamp = "";
         private bool _isbuttonSwitchToGracefulBusy = false;
@@ -409,9 +428,12 @@ namespace diplomaadminpanel.Forms
                 if (StatusCode == HttpStatusCode.OK)
                 {
                     tokensrequesttimestamp = DateTimeOffset.Now.ToString("o");
-                    buttonSwitchToGraceful.Enabled = false;
-                    buttonUpdateTokensList.Enabled = true;
-                    buttonActivateSelectedTokens.Enabled = true;
+
+                    ActivateStage(["2", "3"]);
+
+                    //buttonSwitchToGraceful.Enabled = false;
+                    //buttonUpdateTokensList.Enabled = true;
+                    //buttonActivateSelectedTokens.Enabled = true;
                 }
                 selectedTokens.Clear();
             }
@@ -425,8 +447,8 @@ namespace diplomaadminpanel.Forms
 
 
         private bool _isbuttonUpdateTokensList_ClickBusy = false;
-        private PaginatedRequest<List<TokenInfo>>? lstTnkResp;
-        private HashSet<TokenInfo> selectedTokens = [];
+        private PaginatedRequest<List<FullTokenInfo>>? lstTnkResp;
+        private HashSet<ComboBoxItem> selectedTokens = [];
         private async void buttonUpdateTokensList_Click(object sender, EventArgs e)
         {
             if (lstTnkResp != null)
@@ -440,7 +462,7 @@ namespace diplomaadminpanel.Forms
 
             try
             {
-                lstTnkResp = new PaginatedRequest<List<TokenInfo>>(
+                lstTnkResp = new PaginatedRequest<List<FullTokenInfo>>(
                     usePagination: true,
                     method: HttpMethod.Get,
                     url: "/tokens/",
@@ -457,14 +479,16 @@ namespace diplomaadminpanel.Forms
                     {
                         //response.ForEach(it => Debug.WriteLine(it.ToString()));
 
-                        var selectedIds = new HashSet<int>(selectedTokens.Select(it => it.id));
+                        var selectedIds = new HashSet<int>(selectedTokens.Select(it => ((FullTokenInfo)it.Tag).id));
 
                         _isBeingAdded = true;
 
                         clbTokensList.Items.Clear();
                         foreach (var token in response)
                         {
-                            clbTokensList.Items.Add(token, isChecked: selectedIds.Contains(token.id));
+                            clbTokensList.Items.Add(
+                                new ComboBoxItem { Tag = token, Text = token.fingerprint! },
+                                isChecked: selectedIds.Contains(token.id));
                         }
 
                         _isBeingAdded = false;
@@ -479,6 +503,9 @@ namespace diplomaadminpanel.Forms
             }
 
         }
+
+
+        private List<FullTokenInfo> activatedTokens = [];
 
 
         private bool _buttonActivateSelectedTokensBusy = false;
@@ -507,7 +534,7 @@ namespace diplomaadminpanel.Forms
                 {
                     var selectedFingerprints = string.Join("\n",
                         selectedTokens
-                        .Select(item => item.fingerprint).ToList()
+                        .Select(item => ((FullTokenInfo)item.Tag).fingerprint).ToList()
                     );
 
                     var result = MessageBox.Show(
@@ -519,8 +546,6 @@ namespace diplomaadminpanel.Forms
 
                     if (result != DialogResult.OK) { return; }
 
-                    var selectedIds = selectedTokens
-                        .Select(item => item.id).ToList();
 
                     using var req = new PaginatedRequest<ActivatedInfo>(
                         usePagination: false,
@@ -529,7 +554,10 @@ namespace diplomaadminpanel.Forms
                         payload: new
                         {
                             is_active = true,
-                            ids = selectedIds
+                            ids = selectedTokens
+                                .Select(item => item.Tag)
+                                .Select(item => ((FullTokenInfo)item).id)
+                                .ToList()
                         },
                         onSuccess: (StatusCode, response) =>
                         {
@@ -541,11 +569,21 @@ namespace diplomaadminpanel.Forms
 
                 await GetOrSetEnforcingMode("on");
 
-                clbTokensList.Items.Clear();
-                buttonUpdateTokensList.Enabled = false;
-                buttonSwitchToGraceful.Enabled = true;
-                buttonActivateSelectedTokens.Enabled = false;
-
+                if (clbTokensList.CheckedItems.Count != 0)
+                {
+                    clbTokensList.Items.Clear();
+                    activatedTokens.AddRange(selectedTokens.Select(item => item.Tag).OfType<FullTokenInfo>().ToList());
+                    RedrawActivatedTokensList();
+                }
+                
+                if (clbTokensList.CheckedItems.Count != 0 || activatedTokens.Count != 0)
+                {
+                    ActivateStage(["1", "4", "5"]);
+                }
+                else
+                {
+                    ActivateStage(["1"]);
+                }
 
             }
             finally
@@ -562,11 +600,11 @@ namespace diplomaadminpanel.Forms
 
             if (e.NewValue == CheckState.Checked)
             {
-                selectedTokens.Add(((TokenInfo)clbTokensList.Items[e.Index]));
+                selectedTokens.Add((ComboBoxItem)clbTokensList.Items[e.Index]);
             }
             else
             {
-                selectedTokens.Remove(((TokenInfo)clbTokensList.Items[e.Index]));
+                selectedTokens.Remove((ComboBoxItem)clbTokensList.Items[e.Index]);
             }
             Debug.WriteLine(selectedTokens.Count());
 
@@ -626,8 +664,11 @@ namespace diplomaadminpanel.Forms
         }
 
 
+        private bool _isbtnAllTknSearchBusy = false;
         private async void btnAllTknSearch_Click(object sender, EventArgs e)
         {
+            if (_isbtnAllTknSearchBusy) return;
+            _isbtnAllTknSearchBusy = true;
             pgViewAllTokens.Bind<FullTokenInfo>(
                 method: HttpMethod.Get,
                 url: $"/tokens/",
@@ -639,7 +680,7 @@ namespace diplomaadminpanel.Forms
                 }
             );
             await pgViewAllTokens.FetchCurrentPage();
-
+            _isbtnAllTknSearchBusy = false;
         }
 
 
@@ -769,13 +810,20 @@ namespace diplomaadminpanel.Forms
         private bool _ShouldResetUsersFromDateTime = true;
         private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedTab = tabControl1.SelectedTab;
+            var selectedTab = tcMain.SelectedTab;
 
             //var cbwaschecked = cbHistAutoupdate.Checked;
 
             //if (selectedTab != tpHistory) cbHistAutoupdate.Checked = false;
 
-            if (selectedTab == tpListTokens)
+            if (selectedTab == tpAddNewTokens)
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    lstViewActivatedTokens.Focus();
+                }));
+            }
+            else if (selectedTab == tpListTokens)
             {
                 btnAllTknSearch.PerformClick();
             }
@@ -923,30 +971,32 @@ namespace diplomaadminpanel.Forms
 
             var token_id = Convert.ToInt32(ui.token);
 
-            if (_openTokenForms.TryGetValue(token_id, out var frm))
-            {
-                if (frm.WindowState == FormWindowState.Minimized)
-                    frm.WindowState = FormWindowState.Normal;
+            spawnTokenForm(token_id);
 
-                frm.BringToFront();
+            //if (_openTokenForms.TryGetValue(token_id, out var frm))
+            //{
+            //    if (frm.WindowState == FormWindowState.Minimized)
+            //        frm.WindowState = FormWindowState.Normal;
 
-                return;
-            }
+            //    frm.BringToFront();
 
-            var dlg = new FormEditToken { tokenId = token_id };
+            //    return;
+            //}
 
-            dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
-            dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
-            dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
+            //var dlg = new FormEditToken { tokenId = token_id };
 
-            _openTokenForms[token_id] = dlg;
+            //dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
 
-            dlg.Show();
+            //_openTokenForms[token_id] = dlg;
+
+            //dlg.Show();
         }
 
         private void tmrAutoUpdateHistory_Tick(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab != tpHistory) return;
+            if (tcMain.SelectedTab != tpHistory) return;
             btnSearchHistory_Click(btnSearchHistory, EventArgs.Empty);
         }
 
@@ -1154,5 +1204,291 @@ namespace diplomaadminpanel.Forms
                 btnAllUsersSearch.PerformClick();
             }
         }
+
+
+        private void CreateMyListView()
+        {
+
+        }
+
+        private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+
+            //if (!suppressSelection)
+            //{
+            //    var selectedIndex = listView1.Items.IndexOf(listView1.SelectedItems[0]);
+            //    e.Item!.Selected = false;
+            //    listView1.Items[selectedIndex].Selected = true;
+            //}
+        }
+
+        private bool suppressSelection = false;
+        private bool suppressItemCheck = false;
+
+        private int? prevselectedindex;
+
+        public void SelectItemProgrammatically(int index)
+        {
+            suppressSelection = true;
+
+            lstViewActivatedTokens.SelectedItems.Clear();
+
+            if (index == -1)
+            {
+                prevselectedindex = -1;
+                suppressSelection = false;
+                return;
+            }
+
+            if (index >= 0 && index < lstViewActivatedTokens.Items.Count)
+            {
+                lstViewActivatedTokens.Items[index].Selected = true;
+                prevselectedindex = index;
+                BeginInvoke(new Action(() =>
+                {
+                    lstViewActivatedTokens.Focus();
+                    //listView1.Items[index].Selected = true;
+                }));
+            }
+
+            suppressSelection = false;
+        }
+
+
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!suppressSelection)
+            {
+                suppressSelection = true;
+
+                //if (listView1.SelectedItems.Count > 0)
+                //{
+                lstViewActivatedTokens.SelectedItems.Clear();
+                //}
+
+                if (prevselectedindex != null && prevselectedindex > 0)
+                {
+                    lstViewActivatedTokens.Items[(int)prevselectedindex].Selected = true;
+                }
+
+                suppressSelection = false;
+            }
+        }
+
+
+        private void spawnTokenForm(int token_id)
+        {
+            if (_openTokenForms.TryGetValue(token_id, out var frm))
+            {
+                if (frm.WindowState == FormWindowState.Minimized)
+                    frm.WindowState = FormWindowState.Normal;
+
+                frm.BringToFront();
+
+                return;
+            }
+
+            var dlg = new FormEditToken { tokenId = token_id };
+
+            dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
+            dlg.PerformedSave += (_, _) => btnAllUsersSearch.PerformClick();
+            dlg.PerformedSave += (_, _) => RedrawActivatedTokensList();
+            dlg.FormClosed += (_, _) => btnAllUsersSearch.PerformClick();
+            dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
+            dlg.FormClosed += (_, _) => RedrawActivatedTokensList();
+            dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
+
+            _openTokenForms[token_id] = dlg;
+
+            dlg.Show();
+        }
+
+        private HashSet<int> validatedTokens = [];
+
+        private void ActivateStage(List<string> StagesToActivate)
+        {
+            tpAddNewTokens.Controls
+                .OfType<GroupBox>()
+                .ToList()
+                .ForEach(grp => grp.Enabled = StagesToActivate.Contains(grp.Tag));
+        }
+
+
+        private async void RedrawActivatedTokensList()
+        {
+
+            lstViewActivatedTokens.Items.Clear();
+
+            var activatedIdsList = string.Join(",", activatedTokens.Select(item => item.id).ToList());
+
+            var tokensInfo = await new PaginatedRequest<List<FullTokenInfo>>(
+                usePagination: true,
+                method: HttpMethod.Get,
+                url: "tokens",
+                parameters: new Dictionary<string, string?>
+                {
+                    ["ids"] = activatedIdsList,
+                },
+                onSuccess: (StatusCode, response) =>
+                {
+                    foreach (var item in response)
+                    {
+                        var lstViewItem = new ListViewItem();
+                        lstViewItem.Tag = item;
+                        lstViewItem.Text = item.fingerprint;
+                        lstViewItem.SubItems.Add(string.IsNullOrEmpty(item.user) ? "❌" : "✔");
+                        lstViewItem.SubItems.Add(item.user_additional_data);
+                        lstViewActivatedTokens.Items.Add(lstViewItem);
+                        suppressItemCheck = true;
+                        lstViewActivatedTokens.Items[lstViewActivatedTokens.Items.IndexOf(lstViewItem)].Checked = validatedTokens.Contains(item.id);
+                        suppressItemCheck = false;
+                        //
+                    }
+
+                    //lstViewActivatedTokens.Items.AddRange(
+                    //    [.. response.Select(item =>
+                    //        new ListViewItem(new[] { item.fingerprint, item.user_additional_data! })
+                    //        {
+                    //            Tag = item
+                    //        }
+                    //    )]
+                    //);
+                },
+                nextPageButton: btnActivatedTokensNextPage,
+                previousPageButton: btnActivatedTokensPrevPage,
+                labelCurrentPage: lblActivatedTokensPages
+                ).FetchCurrentPage();
+
+
+            //foreach token in activatedTokens (
+            //    )
+
+            //// Create a new ListView control.
+            ////ListView listView1 = new ListView();
+            ////listView1.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
+
+            //// Set the view to show details.
+            ////listView1.View = View.Details;
+            //// Allow the user to edit item text.
+            ////listView1.LabelEdit = true;
+            //// Allow the user to rearrange columns.
+            ////listView1.AllowColumnReorder = true;
+            //// Display check boxes.
+            ////listView1.CheckBoxes = true;
+            //// Select the item and subitems when selection is made.
+            //lstViewActivatedTokens.FullRowSelect = true;
+            //lstViewActivatedTokens.HideSelection = false;
+            //// Display grid lines.
+            ////listView1.GridLines = true;
+            //// Sort the items in the list in ascending order.
+            ////listView1.Sorting = SortOrder.Ascending;
+
+            //// Create three items and three sets of subitems for each item.
+            //ListViewItem item1 = new ListViewItem("item1");
+            //// Place a check mark next to the item.
+            //item1.Checked = true;
+            //item1.SubItems.Add("1");
+            //item1.SubItems.Add("2");
+            //item1.SubItems.Add("3");
+            //ListViewItem item2 = new ListViewItem("item2");
+            //item2.SubItems.Add("4");
+            //item2.SubItems.Add("5");
+            //item2.SubItems.Add("6");
+            //ListViewItem item3 = new ListViewItem("item3");
+            //// Place a check mark next to the item.
+            //item3.Checked = true;
+            //item3.SubItems.Add("7");
+            //item3.SubItems.Add("8");
+            //item3.SubItems.Add("9");
+
+            //// Create columns for the items and subitems.
+            //// Width of -2 indicates auto-size.
+            ////listView1.Columns.Add("Item Column", -2, HorizontalAlignment.Left);
+            ////listView1.Columns.Add("Column 2", -2, HorizontalAlignment.Left);
+            ////listView1.Columns.Add("Column 3", -2, HorizontalAlignment.Left);
+            ////listView1.Columns.Add("Column 4", -2, HorizontalAlignment.Center);
+
+            ////Add the items to the ListView.
+            //lstViewActivatedTokens.Items.AddRange(new ListViewItem[] { item1, item2, item3 });
+
+            ////// Create two ImageList objects.
+            ////ImageList imageListSmall = new ImageList();
+            ////ImageList imageListLarge = new ImageList();
+
+            ////// Initialize the ImageList objects with bitmaps.
+            ////imageListSmall.Images.Add(Bitmap.FromFile("C:\\MySmallImage1.bmp"));
+            ////imageListSmall.Images.Add(Bitmap.FromFile("C:\\MySmallImage2.bmp"));
+            ////imageListLarge.Images.Add(Bitmap.FromFile("C:\\MyLargeImage1.bmp"));
+            ////imageListLarge.Images.Add(Bitmap.FromFile("C:\\MyLargeImage2.bmp"));
+
+            //////Assign the ImageList objects to the ListView.
+            ////listView1.LargeImageList = imageListLarge;
+            ////listView1.SmallImageList = imageListSmall;
+
+            //// Add the ListView to the control collection.
+            ////this.Controls.Add(listView1);
+
+            //SelectItemProgrammatically(2);
+
+        }
+
+        private void lstViewActivatedTokens_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (suppressItemCheck) return;
+            e.NewValue = e.CurrentValue;
+        }
+
+        private void lstViewActivatedTokens_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ListViewHitTestInfo hit = lstViewActivatedTokens.HitTest(e.Location);
+            ListViewItem? item = hit.Item;
+
+            if (item?.Tag is not FullTokenInfo token) return;
+
+            if (token.user == null || token.user == "") spawnTokenForm(token.id);
+
+        }
+
+        private void btnTestActivatedTokens_Click(object sender, EventArgs e)
+        {
+
+
+            foreach (var item in lstViewActivatedTokens.Items)
+            {
+                if (item is not ListViewItem lstitem) continue;
+
+                if (lstitem.Checked) { continue; }
+
+                if (lstitem.Tag is not FullTokenInfo token) continue;
+
+                if (token.user == null || token.user == "") continue;
+
+                BeginInvoke(new Action(() =>
+                {
+                    lstViewActivatedTokens.Focus();
+                }));
+                SelectItemProgrammatically(lstitem.Index);
+                BeginInvoke(new Action(() =>
+                {
+                    lstViewActivatedTokens.Focus();
+                }));
+
+                if (new FormSampleLogin { InitialUuid = token.user }.ShowDialog() == DialogResult.OK)
+                {
+                    suppressItemCheck = true;
+                    lstViewActivatedTokens.Items[lstitem.Index].Checked = true;
+                    suppressItemCheck = false;
+                    validatedTokens.Add(token.id);
+                }
+
+            }
+            SelectItemProgrammatically(-1);
+            BeginInvoke(new Action(() =>
+            {
+                lstViewActivatedTokens.Focus();
+            }));
+        }
     }
+
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.ComponentModel;
 
 namespace diplomaadminpanel.Forms
 {
@@ -14,6 +15,9 @@ namespace diplomaadminpanel.Forms
             InitializeComponent();
         }
 
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string? InitialUuid { get; set; }
 
         private void BtnSimulateLogin_Click(object sender, EventArgs e)
         {
@@ -68,6 +72,11 @@ namespace diplomaadminpanel.Forms
                             "Вход",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
+                        if (InitialUuid != null)
+                        {
+                            this.DialogResult = DialogResult.OK;
+                            this.Close();
+                        }
                         reinitialize();
                     }
                     else timer1.Start();
@@ -75,6 +84,13 @@ namespace diplomaadminpanel.Forms
         }
 
 
-        private void Form1_Load(object sender, EventArgs e) { }
+        private void Form1_Load(object sender, EventArgs e) {
+            if (InitialUuid != null)
+            {
+                txtLogin.Text = InitialUuid;
+                txtLogin.Enabled = false;
+            }
+
+        }
     }
 }

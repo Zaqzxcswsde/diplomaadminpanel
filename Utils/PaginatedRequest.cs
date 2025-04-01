@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using System.Configuration;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
@@ -54,7 +55,7 @@ namespace diplomaadminpanel.Utils
         {
             this.usePagination = usePagination;
             this.method = method;
-            this.url = $"{Utils.Get_url()}{url}";
+            this.url = $"{Utils.Get_url()}{(url.StartsWith("/") ? url : "/" + url)}";
             this.parameters = parameters ?? new();
             this.payload = payload;
             this.onSuccess = onSuccess;
