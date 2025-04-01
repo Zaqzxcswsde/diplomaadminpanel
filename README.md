@@ -1,6 +1,5 @@
 # General informaiton
 ## What is this?
-# diplomaadminpanel
 An admin panel (PC application) for my diploma, a two-factor authentication app ([mobile app](https://github.com/Zaqzxcswsde/diplomamobile) + [backend](https://github.com/Zaqzxcswsde/diplomabackend) + [PC admin client](https://github.com/Zaqzxcswsde/diplomaadminpanel)).
 ## Status
 Main featureset done, tests and bugfixes to come.
