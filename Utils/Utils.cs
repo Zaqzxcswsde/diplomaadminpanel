@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static diplomaadminpanel.Utils.Settings;
 
 namespace diplomaadminpanel.Utils
 {
@@ -57,7 +58,7 @@ namespace diplomaadminpanel.Utils
             switch (Env)
             {
                 case "dev":
-                    domain = "192.168.1.67:8000";
+                    domain = Settings.configuration["debug_server_url"] ?? "";
                     proto = "http";
                     break;
 
