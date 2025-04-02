@@ -104,30 +104,36 @@ namespace diplomaadminpanel
                 {
                     dgvView.SuspendLayout();
                     dgvView.Rows.Clear();
-                    foreach (T row in response!)
+             
+                    if (dgvView.Columns.Count != 0)
                     {
-                        var built = _rowBuilder!(row);
-                        int rowIndex = -1;
-
-                        if (built is object[] cellValues)
+                        foreach (T row in response!)
                         {
-                            rowIndex = dgvView.Rows.Add(cellValues);
-                            //dgvView.Rows[rowIndex].Tag = row;
-                        }
-                        else if (built is DataGridViewRow dgvRow)
-                        {
-                            rowIndex = dgvView.Rows.Add(dgvRow);
-                            //dgvView.Rows[rowIndex].Tag = row;
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException("Неверный тип данных, возвращённый rowBuilder.");
-                        }
+                            var built = _rowBuilder!(row);
+                            int rowIndex = -1;
+
+                        
+
+                            if (built is object[] cellValues)
+                            {
+                                rowIndex = dgvView.Rows.Add(cellValues);
+                                //dgvView.Rows[rowIndex].Tag = row;
+                            }
+                            else if (built is DataGridViewRow dgvRow)
+                            {
+                                rowIndex = dgvView.Rows.Add(dgvRow);
+                                //dgvView.Rows[rowIndex].Tag = row;
+                            }
+                            else
+                            {
+                                throw new InvalidOperationException("Неверный тип данных, возвращённый rowBuilder.");
+                            }
 
 
-                        //int rowIndex = dgvView.Rows.Add(_rowBuilder!(row));
+                            //int rowIndex = dgvView.Rows.Add(_rowBuilder!(row));
 
-                        dgvView.Rows[rowIndex].Tag = row;
+                            dgvView.Rows[rowIndex].Tag = row;
+                        }
                     }
                     dgvView.ResumeLayout();
                 },

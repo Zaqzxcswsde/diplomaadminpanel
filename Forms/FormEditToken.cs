@@ -300,10 +300,12 @@ namespace diplomaadminpanel.Forms
         }
 
 
-        private async Task<HttpStatusCode> PerformSave()
+        private async Task<HttpStatusCode> PerformSave(bool refetchUI = true)
         {
             UpdateTokenFromUI();
-            return await SaveChangesToDatabaseAndRefetchUI();
+            var res = await SaveChangesToDatabaseAndRefetchUI(refetchUI);
+            PerformedSave?.Invoke(this, EventArgs.Empty);
+            return res;
         }
 
 
@@ -327,7 +329,7 @@ namespace diplomaadminpanel.Forms
         }
 
 
-        private async Task<HttpStatusCode> SaveChangesToDatabaseAndRefetchUI()
+        private async Task<HttpStatusCode> SaveChangesToDatabaseAndRefetchUI(bool refetchUI = true)
         {
             string? createdUserId = null;
             HttpStatusCode status;
@@ -362,7 +364,7 @@ namespace diplomaadminpanel.Forms
                     user_additional_data = token.user_additional_data,
                     allowed_ips = token.allowed_ips
                 },
-                onSuccess: async (_, _) => await UpdateTokenFromDatabaseAndRefetchUI(),
+                onSuccess: refetchUI ? (async (_, _) => await UpdateTokenFromDatabaseAndRefetchUI()) : null,
                 onError: async (_, _) =>
                 {
                     if (createdUserId != null)
@@ -402,7 +404,7 @@ namespace diplomaadminpanel.Forms
                 }
                 else if (result == DialogResult.Yes)
                 {
-                    await PerformSave();
+                    await PerformSave(refetchUI: false);
                 }
             }
         }
@@ -432,7 +434,7 @@ namespace diplomaadminpanel.Forms
             }
             else
             {
-                PerformedSave?.Invoke(this, EventArgs.Empty);
+                
             }
         }
 

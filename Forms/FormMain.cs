@@ -1294,9 +1294,9 @@ namespace diplomaadminpanel.Forms
             dlg.PerformedSave += (_, _) => btnAllTknSearch.PerformClick();
             dlg.PerformedSave += (_, _) => btnAllUsersSearch.PerformClick();
             dlg.PerformedSave += (_, _) => RedrawActivatedTokensList();
-            dlg.FormClosed += (_, _) => btnAllUsersSearch.PerformClick();
-            dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
-            dlg.FormClosed += (_, _) => RedrawActivatedTokensList();
+            //dlg.FormClosed += (_, _) => btnAllUsersSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => btnAllTknSearch.PerformClick();
+            //dlg.FormClosed += (_, _) => RedrawActivatedTokensList();
             dlg.FormClosed += (_, _) => _openTokenForms.Remove(token_id);
 
             _openTokenForms[token_id] = dlg;
