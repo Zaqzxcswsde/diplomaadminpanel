@@ -108,8 +108,7 @@
             // 
             // PaginatedView
             // 
-            AutoScaleDimensions = new SizeF(96F, 96F);
-            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleMode = AutoScaleMode.Inherit;
             Controls.Add(pnlBtns);
             Controls.Add(dgvView);
             Name = "PaginatedView";
