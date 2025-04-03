@@ -40,10 +40,10 @@
             pgViewListUsers.Size = new Size(379, 300);
             pgViewListUsers.TabIndex = 0;
             // 
-            // textBox1
+            // txtSearch
             // 
             txtSearch.Location = new Point(12, 12);
-            txtSearch.Name = "textBox1";
+            txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(165, 23);
             txtSearch.TabIndex = 3;
             txtSearch.KeyDown += textBox1_KeyDown;
@@ -60,8 +60,8 @@
             // 
             // FormAddToken
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(401, 321);
             Controls.Add(btnSearch);
             Controls.Add(txtSearch);
